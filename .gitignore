@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env/
+
+# Data - large files not tracked by git
+data/imagenet_val/
+data/results/
+
+# Model weights / compiled artifacts
+*.mxq
+*.onnx
+*.pt
+*.pth
+*.bin
+
+# Logs
+tegrastats.log
+*.log
+
+# OS
+.DS_Store
