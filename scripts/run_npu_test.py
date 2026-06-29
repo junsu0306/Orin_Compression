@@ -1,8 +1,31 @@
 #!/usr/bin/env python3
-"""cd /home/airlab_compression/Orin_Compression
-source .env/bin/activate
-export MBLT_MODEL_ZOO_VERBOSE=true
-python3 scripts/run_npu_test.py
+"""
+NPU 기본 동작 확인 및 추론 속도(latency/FPS) 측정 스크립트.
+정확도 측정 없이 빠르게 모델 동작 여부와 속도만 확인할 때 사용.
+정확도·메모리 상세 분석은 run_detailed_benchmark.py 사용.
+
+실행 전 준비
+  cd /home/airlab_compression/Orin_Compression
+  source .env/bin/activate
+
+기본 실행 (4개 모델 전부, 결과 data/results/ 에 자동 저장)
+  python3 scripts/run_npu_test.py
+
+tegrastats 병렬 실행 (시스템 RAM·전력·온도 동시 기록, 권장)
+  sudo tegrastats --interval 500 &> data/results/tegrastats_$(date +%Y%m%d_%H%M%S).log &
+  python3 scripts/run_npu_test.py
+  pkill -f tegrastats
+
+주요 옵션
+  --models   DeiT_Tiny_Patch16_224 ViT_Tiny_Patch16_224   테스트할 모델 선택
+  --runs     20                                            타이밍 반복 횟수 (기본 5)
+  --warmups  5                                             워밍업 횟수 (기본 1)
+  --core-mode  single | multi | global4 | global8          NPU 코어 모드 (기본 global8)
+  --no-save                                                결과 파일 저장 안 함
+
+예시
+  python3 scripts/run_npu_test.py --models DeiT_Tiny_Patch16_224 --runs 50 --warmups 5
+  python3 scripts/run_npu_test.py --core-mode single
 """
 
 
